@@ -42,16 +42,20 @@ export function initSmoothScroll(onScroll) {
     return lenis;
 }
 
-export function initScrollAnimations(experience) {
+export function initScrollAnimations(experience, { subpage = false } = {}) {
     if (prefersReducedMotion()) return;
 
-    gsap.to('.nav', {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        delay: 0.3,
-        ease: 'power3.out',
-    });
+    const hasSiteHeader = document.querySelector('.site-header');
+
+    if (!hasSiteHeader) {
+        gsap.to('.nav', {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            delay: 0.3,
+            ease: 'power3.out',
+        });
+    }
 
     gsap.to('.scroll-hint', {
         opacity: 1,
@@ -60,10 +64,11 @@ export function initScrollAnimations(experience) {
         ease: 'power2.out',
     });
 
-    if (!isMobile()) {
+    const heroEl = document.querySelector('.hero-rich') || document.querySelector('.hero');
+    if (heroEl && !isMobile() && !subpage) {
         const heroTl = gsap.timeline({
             scrollTrigger: {
-                trigger: '.hero',
+                trigger: heroEl,
                 start: 'top top',
                 end: '+=90%',
                 pin: true,
@@ -71,7 +76,7 @@ export function initScrollAnimations(experience) {
             },
         });
 
-        heroTl.to('.hero-inner', {
+        heroTl.to('.hero-inner, .hero-rich__content', {
             y: -80,
             opacity: 0.15,
             scale: 0.94,
@@ -85,7 +90,16 @@ export function initScrollAnimations(experience) {
         }, 0);
     }
 
-    gsap.utils.toArray('.panel').forEach((panel) => {
+    if (subpage) {
+        gsap.from('.page-hero', {
+            y: 40,
+            opacity: 0,
+            duration: 1.1,
+            ease: 'power3.out',
+        });
+    }
+
+    document.querySelectorAll('[data-panel]').forEach((panel) => {
         ScrollTrigger.create({
             trigger: panel,
             start: 'top center',
@@ -105,6 +119,34 @@ export function initScrollAnimations(experience) {
             y: isMobile() ? 32 : 0,
             opacity: 0,
             duration: 1,
+            delay: i * 0.06,
+            ease: 'power3.out',
+        });
+    });
+
+    gsap.utils.toArray('.service-card').forEach((card, i) => {
+        gsap.from(card, {
+            scrollTrigger: {
+                trigger: card,
+                start: 'top 90%',
+            },
+            y: 36,
+            opacity: 0,
+            duration: 0.9,
+            delay: (i % 2) * 0.08,
+            ease: 'power3.out',
+        });
+    });
+
+    gsap.utils.toArray('.metric').forEach((item, i) => {
+        gsap.from(item, {
+            scrollTrigger: {
+                trigger: item,
+                start: 'top 92%',
+            },
+            y: 24,
+            opacity: 0,
+            duration: 0.8,
             delay: i * 0.06,
             ease: 'power3.out',
         });
@@ -133,6 +175,29 @@ export function initScrollAnimations(experience) {
         ease: 'power3.out',
     });
 
+    gsap.from('.showcase-split__content', {
+        scrollTrigger: {
+            trigger: '.showcase-split',
+            start: 'top 75%',
+        },
+        x: isMobile() ? 0 : 40,
+        y: isMobile() ? 40 : 0,
+        opacity: 0,
+        duration: 1.1,
+        ease: 'power3.out',
+    });
+
+    gsap.from('.principle-block__inner', {
+        scrollTrigger: {
+            trigger: '.principle-block',
+            start: 'top 80%',
+        },
+        y: 48,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power3.out',
+    });
+
     gsap.from('.contact-link', {
         scrollTrigger: {
             trigger: '.contact',
@@ -146,7 +211,8 @@ export function initScrollAnimations(experience) {
 }
 
 function getPanelIndex(panel) {
-    const panels = ['home', 'work', 'studio', 'contact'];
-    const id = panel.id || 'home';
-    return panels.indexOf(id) * 0.25;
+    const id = panel.dataset.panel || panel.id || 'home';
+    const panels = ['home', 'metrics', 'approach', 'services', 'principle', 'trust', 'cta'];
+    const idx = panels.indexOf(id);
+    return idx >= 0 ? idx * 0.2 : 0;
 }

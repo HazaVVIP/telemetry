@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Pengujian aplikasi web, keamanan jaringan, simulasi red team, dan assessment cloud API — layanan App Telemetry.">
+    <meta name="theme-color" content="#000000">
+    <title>Layanan · App Telemetry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-page="services">
+    <div class="vignette"></div>
+    <div class="grain"></div>
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <div class="scroll-progress" id="scroll-progress"></div>
+    <div id="canvas-container"></div>
+
+    <button type="button" class="sound-toggle" id="sound-toggle" data-hover aria-label="Aktifkan suara ambient">
+        <span class="sound-icon">◯</span>
+        <span class="sound-label">Suara</span>
+    </button>
+
+    <div class="project-preview" id="project-preview" aria-hidden="true">
+        <div class="project-preview-media" id="preview-media"></div>
+        <div class="project-preview-meta">
+            <span class="project-preview-index" id="preview-index">01</span>
+            <span class="project-preview-type" id="preview-type">VAPT</span>
+        </div>
+    </div>
+
+    <aside class="case-study" id="case-study" aria-hidden="true">
+        <div class="case-study-curtain"></div>
+        <button type="button" class="case-study-close" data-hover aria-label="Tutup layanan">Tutup</button>
+        <div class="case-study-inner">
+            <div class="case-study-visual"></div>
+            <div class="case-study-copy">
+                <span class="case-study-index">01</span>
+                <h2 class="case-study-title">Layanan</h2>
+                <p class="case-study-type">Tipe · Tahun</p>
+                <p class="case-study-client">Klien</p>
+                <p class="case-study-desc">Deskripsi</p>
+                <ul class="case-study-tags" role="list"></ul>
+            </div>
+        </div>
+    </aside>
+
+    <header class="site-header">
+        <div class="nav">
+            <a href="/" class="nav-logo" data-hover>App Telemetry</a>
+            <nav class="nav-links" aria-label="Navigasi utama">
+                <a href="/services.html" class="nav-link" data-nav="services" data-hover>Layanan</a>
+                <a href="/about.html" class="nav-link" data-nav="about" data-hover>Tentang</a>
+                <a href="/contact.html" class="nav-link" data-nav="contact" data-hover>Kontak</a>
+            </nav>
+            <div class="nav-cta-wrap">
+                <a href="/contact.html" class="nav-cta" data-hover>Hubungi kami</a>
+            </div>
+            <button type="button" class="nav-toggle" aria-label="Buka menu"><span></span></button>
+        </div>
+    </header>
+
+    <div class="page-wrap">
+        <section class="page-hero page-hero--visual">
+            <div
+                class="page-hero__bg theme-media-wrap"
+                data-theme-media
+                data-theme-media-image="/assets/media/images/network-abstract.jpg"
+                data-theme-media-autoplay="false"
+                aria-hidden="true"
+            ></div>
+            <p class="page-hero__eyebrow">Layanan</p>
+            <h1 class="page-hero__title">Penawaran keamanan offensive</h1>
+            <p class="page-hero__lede">
+                Setiap engagement disesuaikan dengan lingkungan dan profil risiko Anda — validasi manual,
+                mindset attacker, dan deliverable yang bisa ditindaklanjuti tim engineering maupun manajemen.
+                Pilih layanan di bawah untuk metodologi, tooling, dan contoh outcome.
+            </p>
+        </section>
+
+        <main class="page-content">
+            <section class="work" id="work">
+                <div class="section-head">
+                    <span class="section-label">Semua layanan</span>
+                    <span class="section-count">04</span>
+                </div>
+                <ul class="work-list" role="list">
+                    <li class="work-item" data-hover data-slug="web-application-pentest" tabindex="0" role="button" aria-label="Lihat Pengujian Aplikasi Web">
+                        <span class="work-index">01</span>
+                        <h2 class="work-title">Pengujian Aplikasi Web</h2>
+                        <span class="work-type">VAPT · OWASP</span>
+                    </li>
+                    <li class="work-item" data-hover data-slug="network-infrastructure" tabindex="0" role="button" aria-label="Lihat Jaringan dan Infrastruktur">
+                        <span class="work-index">02</span>
+                        <h2 class="work-title">Jaringan &amp; Infrastruktur</h2>
+                        <span class="work-type">Internal · External</span>
+                    </li>
+                    <li class="work-item" data-hover data-slug="red-team-simulation" tabindex="0" role="button" aria-label="Lihat Simulasi Red Team">
+                        <span class="work-index">03</span>
+                        <h2 class="work-title">Simulasi Red Team</h2>
+                        <span class="work-type">Adversary Emulation</span>
+                    </li>
+                    <li class="work-item" data-hover data-slug="cloud-api-security" tabindex="0" role="button" aria-label="Lihat Keamanan Cloud dan API">
+                        <span class="work-index">04</span>
+                        <h2 class="work-title">Keamanan Cloud &amp; API</h2>
+                        <span class="work-type">Cloud · API</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="cta-band" style="margin-top: 4rem; border: 1px solid var(--line);">
+                <div class="cta-band__inner">
+                    <h2 class="cta-band__title">Butuh scope khusus atau retainer?</h2>
+                    <a href="/contact.html" class="btn btn-primary" data-hover>Diskusikan engagement Anda</a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="site-footer__grid">
+                <div>
+                    <p class="site-footer__brand">App Telemetry</p>
+                    <p class="site-footer__tagline">Assessment keamanan offensive oleh Aditya — bug hunter, pentester, dan auditor infrastruktur.</p>
+                </div>
+                <div>
+                    <p class="site-footer__col-title">Halaman</p>
+                    <ul class="site-footer__links">
+                        <li><a href="/services.html">Layanan</a></li>
+                        <li><a href="/about.html">Tentang</a></li>
+                        <li><a href="/contact.html">Kontak</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="site-footer__col-title">Terhubung</p>
+                    <ul class="site-footer__links">
+                        <li><a href="https://www.linkedin.com/in/hazaaditya/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                        <li><a href="https://github.com/HazaVVIP" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                        <li><a href="mailto:hello@app-telemetry.net">hello@app-telemetry.net</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="site-footer__col-title">Fokus</p>
+                    <ul class="site-footer__links">
+                        <li>VAPT &amp; Aplikasi Web</li>
+                        <li>Pentest Jaringan</li>
+                        <li>Red Team</li>
+                        <li>Cloud &amp; API</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom">
+                <span>© 2026 App Telemetry · Aditya</span>
+                <span>Keamanan offensive</span>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="/js/services-page.js"></script>
+</body>
+</html>

@@ -2,9 +2,10 @@ import gsap from 'gsap';
 import { Cursor } from './cursor.js';
 import { MainExperience } from './experience.js';
 import { initScrollAnimations, initSmoothScroll } from './scroll.js';
-import { initProjectPreview, initScrollProgress } from './ui.js';
-import { initCaseStudy } from './case-study.js';
+import { initScrollProgress } from './ui.js';
+import { initLayout } from './layout.js';
 import { initAudio } from './audio.js';
+import { initThemeMedia } from './media.js';
 
 export class LoadingExperience {
     constructor() {
@@ -15,6 +16,7 @@ export class LoadingExperience {
     }
 
     run() {
+        initThemeMedia();
         const progressEl = document.getElementById('progress');
         const loaderEl = document.getElementById('loader');
         Promise.all([document.fonts.ready]).finally(() => this.tick(progressEl, loaderEl));
@@ -34,6 +36,7 @@ export class LoadingExperience {
     }
 
     hideLoader(loaderEl) {
+        initLayout();
         gsap.to(loaderEl, {
             opacity: 0,
             duration: 0.8,
@@ -68,6 +71,14 @@ export class LoadingExperience {
             ease: 'power3.out',
         });
 
+        gsap.to('.hero-actions', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.9,
+            ease: 'power3.out',
+        });
+
         this.experience = new MainExperience();
 
         const updateScroll = () => {
@@ -78,8 +89,6 @@ export class LoadingExperience {
 
         const lenis = initSmoothScroll(updateScroll);
         initScrollAnimations(this.experience);
-        this.caseStudy = initCaseStudy(lenis);
-        initProjectPreview((slug) => this.caseStudy?.open(slug));
         initScrollProgress(lenis);
         initAudio();
         new Cursor();

@@ -39,7 +39,7 @@ export class AmbientAudio {
         this.gain.gain.linearRampToValueAtTime(0.028, this.ctx.currentTime + 2);
         this.enabled = true;
         this.btn.classList.add('is-on');
-        this.btn.querySelector('.sound-label').textContent = 'Sound on';
+        this.btn.querySelector('.sound-label').textContent = 'Suara aktif';
     }
 
     stop() {
@@ -52,7 +52,7 @@ export class AmbientAudio {
             this.ctx = null;
         }, 700);
         this.btn.classList.remove('is-on');
-        this.btn.querySelector('.sound-label').textContent = 'Sound';
+        this.btn.querySelector('.sound-label').textContent = 'Suara';
     }
 }
 

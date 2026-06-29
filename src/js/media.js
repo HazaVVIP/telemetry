@@ -1,3 +1,19 @@
+export function initThemeMedia() {
+    document.querySelectorAll('[data-theme-media]').forEach((container) => {
+        const project = {
+            title: container.dataset.themeMediaTitle || '',
+            video: container.dataset.themeMediaVideo || null,
+            image: container.dataset.themeMediaImage || null,
+            poster: container.dataset.themeMediaPoster || null,
+        };
+
+        if (!project.video && !project.image && !project.poster) return;
+
+        const autoplay = container.dataset.themeMediaAutoplay !== 'false';
+        renderProjectMedia(container, project, { autoplay, loop: true });
+    });
+}
+
 export function renderProjectMedia(container, project, { autoplay = false, loop = true } = {}) {
     if (!container || !project) return null;
 
