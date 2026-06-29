@@ -1,4 +1,5 @@
 import { PreviewCanvas } from './preview-canvas.js';
+import { renderProjectMedia, clearProjectMedia } from './media.js';
 import { getProject } from './projects.js';
 import { isMobile } from './utils.js';
 
@@ -6,7 +7,7 @@ export function initProjectPreview(onProjectClick) {
     const preview = document.getElementById('project-preview');
     const media = document.getElementById('preview-media');
     const indexEl = document.getElementById('preview-index');
-    const typeEl = document.getElementById('preview-type');
+    const typeElReal = document.getElementById('preview-type');
     if (!preview || !media) return;
 
     let canvas = null;
@@ -24,24 +25,42 @@ export function initProjectPreview(onProjectClick) {
         if (active) requestAnimationFrame(move);
     };
 
+    const showPreview = (project) => {
+        indexEl.textContent = project.index;
+        typeElReal.textContent = project.type;
+
+        clearProjectMedia(media);
+        canvas?.stop();
+        canvas = null;
+
+        const rendered = renderProjectMedia(media, project, { autoplay: true, loop: true });
+        if (!rendered) {
+            media.innerHTML = '<canvas class="preview-canvas"></canvas>';
+            const canvasEl = media.querySelector('canvas');
+            canvas = new PreviewCanvas(canvasEl, project.visual);
+            canvas.start();
+        }
+
+        preview.classList.add('is-visible');
+        active = true;
+        requestAnimationFrame(move);
+    };
+
+    const hidePreview = () => {
+        preview.classList.remove('is-visible');
+        active = false;
+        canvas?.stop();
+        canvas = null;
+        clearProjectMedia(media);
+    };
+
     document.querySelectorAll('.work-item').forEach((item) => {
         const slug = item.dataset.slug;
         const project = slug ? getProject(slug) : null;
 
         item.addEventListener('mouseenter', () => {
             if (isMobile() || !project) return;
-
-            indexEl.textContent = project.index;
-            typeEl.textContent = project.type;
-
-            media.innerHTML = '<canvas class="preview-canvas"></canvas>';
-            const canvasEl = media.querySelector('canvas');
-            canvas = new PreviewCanvas(canvasEl, project.visual);
-            canvas.start();
-
-            preview.classList.add('is-visible');
-            active = true;
-            requestAnimationFrame(move);
+            showPreview(project);
         });
 
         item.addEventListener('mousemove', (e) => {
@@ -55,12 +74,7 @@ export function initProjectPreview(onProjectClick) {
             ty = Math.min(Math.max(16, ty), maxY);
         });
 
-        item.addEventListener('mouseleave', () => {
-            preview.classList.remove('is-visible');
-            active = false;
-            canvas?.stop();
-            canvas = null;
-        });
+        item.addEventListener('mouseleave', hidePreview);
 
         item.addEventListener('click', () => {
             if (slug) onProjectClick?.(slug);

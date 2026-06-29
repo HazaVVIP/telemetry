@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { getProject } from './projects.js';
 import { PreviewCanvas } from './preview-canvas.js';
+import { renderProjectMedia, clearProjectMedia } from './media.js';
 
 export class CaseStudy {
     constructor(lenis) {
@@ -8,7 +9,7 @@ export class CaseStudy {
         this.root = document.getElementById('case-study');
         this.curtain = this.root?.querySelector('.case-study-curtain');
         this.closeBtn = this.root?.querySelector('.case-study-close');
-        this.canvasEl = this.root?.querySelector('canvas');
+        this.visualEl = this.root?.querySelector('.case-study-visual');
         this.preview = null;
         this.isOpen = false;
 
@@ -32,9 +33,34 @@ export class CaseStudy {
         }
     }
 
+    setVisual(project) {
+        clearProjectMedia(this.visualEl);
+        this.preview?.stop();
+        this.preview = null;
+
+        this.visualEl.innerHTML = '';
+
+        const rendered = renderProjectMedia(this.visualEl, project, { autoplay: true, loop: true });
+        if (!rendered) {
+            const canvas = document.createElement('canvas');
+            canvas.setAttribute('aria-hidden', 'true');
+            this.visualEl.appendChild(canvas);
+            this.preview = new PreviewCanvas(canvas, project.visual);
+            this.preview.start();
+        }
+    }
+
+    clearVisual() {
+        clearProjectMedia(this.visualEl);
+        this.preview?.stop();
+        this.preview = null;
+        if (this.visualEl) this.visualEl.innerHTML = '<canvas aria-hidden="true"></canvas>';
+    }
+
     open(slug, pushState = true) {
         const project = getProject(slug);
-        if (!project || this.isOpen) return;
+        if (!project) return;
+        if (this.isOpen && location.hash === `#project/${slug}`) return;
 
         this.isOpen = true;
         this.root.setAttribute('aria-hidden', 'false');
@@ -50,9 +76,7 @@ export class CaseStudy {
         const tags = this.root.querySelector('.case-study-tags');
         tags.innerHTML = project.services.map((s) => `<li>${s}</li>`).join('');
 
-        if (this.preview) this.preview.stop();
-        this.preview = new PreviewCanvas(this.canvasEl, project.visual);
-        this.preview.start();
+        this.setVisual(project);
 
         if (pushState) {
             history.pushState({ case: slug }, '', `#project/${slug}`);
@@ -92,7 +116,7 @@ export class CaseStudy {
                 this.root.setAttribute('aria-hidden', 'true');
                 document.body.classList.remove('case-open');
                 this.lenis?.start();
-                this.preview?.stop();
+                this.clearVisual();
             },
         });
 
