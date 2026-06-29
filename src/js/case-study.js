@@ -2,7 +2,6 @@ import gsap from 'gsap';
 import { getProject } from './projects.js';
 import { PreviewCanvas } from './preview-canvas.js';
 import { renderProjectMedia, clearProjectMedia } from './media.js';
-import { isMobile } from './utils.js';
 
 export class CaseStudy {
     constructor(lenis) {
@@ -40,11 +39,7 @@ export class CaseStudy {
         this.preview = null;
         this.visualEl.innerHTML = '';
 
-        const visualProject = isMobile()
-            ? { ...project, video: null, image: project.poster || project.image }
-            : project;
-
-        const rendered = renderProjectMedia(this.visualEl, visualProject, { autoplay: !isMobile(), loop: true });
+        const rendered = renderProjectMedia(this.visualEl, project, { autoplay: true, loop: true });
         if (!rendered) {
             const canvas = document.createElement('canvas');
             canvas.setAttribute('aria-hidden', 'true');
