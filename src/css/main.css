@@ -300,7 +300,14 @@ body.is-loaded .sound-toggle {
     grid-template-columns: 1fr 1.1fr;
     gap: 3rem;
     padding: clamp(5rem, 12vh, 8rem) var(--pad-x) var(--pad-x);
-    align-items: center;
+    align-items: start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.case-study-copy {
+    position: relative;
+    z-index: 2;
 }
 
 .case-study-index {
@@ -360,11 +367,14 @@ body.is-loaded .sound-toggle {
 }
 
 .case-study-visual {
+    position: relative;
+    z-index: 0;
     width: 100%;
     aspect-ratio: 4 / 5;
     max-height: 72vh;
     border: 1px solid var(--line);
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .case-study-visual canvas {
@@ -403,13 +413,30 @@ body.case-open .project-preview {
 @media (max-width: 900px) {
     .case-study-inner {
         grid-template-columns: 1fr;
-        overflow-y: auto;
+        grid-template-rows: auto auto;
+        gap: 1.75rem;
+        padding-top: clamp(4.5rem, 10vh, 6rem);
+        padding-bottom: 2.5rem;
         align-items: start;
     }
 
+    .case-study-copy {
+        order: 1;
+    }
+
     .case-study-visual {
-        max-height: 40vh;
-        order: -1;
+        order: 2;
+        aspect-ratio: 16 / 10;
+        max-height: none;
+        height: auto;
+        max-width: 100%;
+    }
+
+    .case-study-visual .project-media-video,
+    .case-study-visual .project-media-image {
+        aspect-ratio: 16 / 10;
+        max-height: 220px;
+        object-fit: cover;
     }
 
     .work-item::after {
@@ -648,6 +675,28 @@ body.case-open .project-preview {
     font-weight: 300;
     letter-spacing: -0.02em;
     color: var(--text-dim);
+}
+
+.studio-manifesto--secondary {
+    margin-top: 1.5rem;
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    line-height: 1.65;
+    color: var(--text-muted);
+}
+
+.studio-clients {
+    list-style: none;
+    margin-top: 1.5rem;
+    display: grid;
+    gap: 0.65rem;
+}
+
+.studio-clients li {
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    padding-left: 1rem;
+    border-left: 1px solid var(--line);
 }
 
 .studio-stats {

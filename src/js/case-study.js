@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { getProject } from './projects.js';
 import { PreviewCanvas } from './preview-canvas.js';
 import { renderProjectMedia, clearProjectMedia } from './media.js';
+import { isMobile } from './utils.js';
 
 export class CaseStudy {
     constructor(lenis) {
@@ -37,10 +38,13 @@ export class CaseStudy {
         clearProjectMedia(this.visualEl);
         this.preview?.stop();
         this.preview = null;
-
         this.visualEl.innerHTML = '';
 
-        const rendered = renderProjectMedia(this.visualEl, project, { autoplay: true, loop: true });
+        const visualProject = isMobile()
+            ? { ...project, video: null, image: project.poster || project.image }
+            : project;
+
+        const rendered = renderProjectMedia(this.visualEl, visualProject, { autoplay: !isMobile(), loop: true });
         if (!rendered) {
             const canvas = document.createElement('canvas');
             canvas.setAttribute('aria-hidden', 'true');
@@ -60,7 +64,19 @@ export class CaseStudy {
     open(slug, pushState = true) {
         const project = getProject(slug);
         if (!project) return;
-        if (this.isOpen && location.hash === `#project/${slug}`) return;
+
+        if (this.isOpen) {
+            this.setVisual(project);
+            this.root.querySelector('.case-study-index').textContent = project.index;
+            this.root.querySelector('.case-study-title').textContent = project.title;
+            this.root.querySelector('.case-study-type').textContent = `${project.type} · ${project.year}`;
+            this.root.querySelector('.case-study-client').textContent = project.client;
+            this.root.querySelector('.case-study-desc').textContent = project.description;
+            this.root.querySelector('.case-study-tags').innerHTML =
+                project.services.map((s) => `<li>${s}</li>`).join('');
+            if (pushState) history.pushState({ case: slug }, '', `#project/${slug}`);
+            return;
+        }
 
         this.isOpen = true;
         this.root.setAttribute('aria-hidden', 'false');
